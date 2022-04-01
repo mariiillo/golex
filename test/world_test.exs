@@ -6,6 +6,7 @@ use ExUnit.Case
     new_context = context
                   |> Map.put(:id, 1)
                   |> Map.put(:state, state())
+                  |> Map.put(:new_state, new_state())
     {:ok, new_context}
   end
 
@@ -30,6 +31,27 @@ use ExUnit.Case
     }
   end
 
+  def new_state do
+    %{
+      {0, 0} => %Golex.Core.Cell{status: 'alive'},
+      {0, 1} => %Golex.Core.Cell{status: 'alive'},
+      {0, 2} => %Golex.Core.Cell{status: 'dead'},
+      {0, 3} => %Golex.Core.Cell{status: 'dead'},
+      {1, 0} => %Golex.Core.Cell{status: 'alive'},
+      {1, 1} => %Golex.Core.Cell{status: 'alive'},
+      {1, 2} => %Golex.Core.Cell{status: 'dead'},
+      {1, 3} => %Golex.Core.Cell{status: 'alive'},
+      {2, 0} => %Golex.Core.Cell{status: 'alive'},
+      {2, 1} => %Golex.Core.Cell{status: 'dead'},
+      {2, 2} => %Golex.Core.Cell{status: 'dead'},
+      {2, 3} => %Golex.Core.Cell{status: 'alive'},
+      {3, 0} => %Golex.Core.Cell{status: 'dead'},
+      {3, 1} => %Golex.Core.Cell{status: 'alive'},
+      {3, 2} => %Golex.Core.Cell{status: 'alive'},
+      {3, 3} => %Golex.Core.Cell{status: 'alive'},
+    }
+  end
+
   defp assert_generation(world, expected_generation) do
     assert world.generation == expected_generation
     world
@@ -47,6 +69,14 @@ use ExUnit.Case
       |> assert_generation(2)
       |> World.next_generation
       |> assert_generation(3)
+    end
+
+    test 'it creates a new world for each generation', %{id: id, state: state, new_state: new_state} do
+      world = World.new(id, state)
+
+      new_world = World.next_generation(world)
+
+      assert new_world.state == new_state
     end
 
     test 'calculates the alive neighbours of cells in the corners', %{id: id, state: state} do
