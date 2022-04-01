@@ -5,16 +5,24 @@ defmodule Golex.Core.World do
   
   alias Golex.Core.Cell
   
-  defstruct ~w[generation state]a
+  defstruct ~w[id generation state]a
   
-  def new(state) do
-    struct!(__MODULE__, state: state, generation: 0)
+  def new(id, state) do
+    struct!(__MODULE__, id: id, state: state, generation: 0)
   end
 
   def next_generation(world) do
     next_generation = world.generation + 1
+    new_state =
+      world.state
+      |> Enum.reduce(%{}, fn({position, cell}, acc) ->
+        number_of_living_neighbours = calculate_alive_neighbours(world, position)
+        new_cell = Cell.next_generation(cell, number_of_living_neighbours)
+        Map.put(acc, position, new_cell) 
+      end)
 
-    struct!(__MODULE__, generation: next_generation, state: %{})
+  
+    struct!(__MODULE__, id: world.id, generation: next_generation, state: new_state)
   end
 
   def calculate_alive_neighbours(world, position) do

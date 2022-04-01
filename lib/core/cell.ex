@@ -19,6 +19,10 @@ defmodule Golex.Core.Cell do
     'alive'
   end
 
+  defp calculate_new_status('dead', alive_neigbours) when alive_neigbours != 3 do
+    'dead'
+  end
+
   defp calculate_new_status('alive', alive_neigbours) when alive_neigbours < 2 do
     'dead'
   end

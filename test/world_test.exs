@@ -3,7 +3,10 @@ use ExUnit.Case
   alias Golex.Core.{World, Cell}
 
   def setup_function(context) do
-    {:ok, Map.put(context, :state, state())}
+    new_context = context
+                  |> Map.put(:id, 1)
+                  |> Map.put(:state, state())
+    {:ok, new_context}
   end
 
   def state do
@@ -35,8 +38,8 @@ use ExUnit.Case
   describe "World" do
     setup [:setup_function]
 
-    test 'it keeps track of the generation numbert', %{state: state} do
-      world = World.new(state)
+    test 'it keeps track of the generation numbert', %{id: id, state: state} do
+      world = World.new(id, state)
 
       World.next_generation(world)
       |> assert_generation(1)
@@ -46,8 +49,8 @@ use ExUnit.Case
       |> assert_generation(3)
     end
 
-    test 'calculates the alive neighbours of cells in the corners', %{state: state} do
-      world = World.new(state)
+    test 'calculates the alive neighbours of cells in the corners', %{id: id, state: state} do
+      world = World.new(id, state)
 
       assert World.calculate_alive_neighbours(world, {0, 0}) == 2
       assert World.calculate_alive_neighbours(world, {3, 0}) == 0
@@ -55,8 +58,8 @@ use ExUnit.Case
       assert World.calculate_alive_neighbours(world, {3, 3}) == 3
     end
 
-    test 'calculates the alive neighbours of cells at the border', %{state: state} do
-      world = World.new(state)
+    test 'calculates the alive neighbours of cells at the border', %{id: id, state: state} do
+      world = World.new(id, state)
 
       assert World.calculate_alive_neighbours(world, {0, 1}) == 3
       assert World.calculate_alive_neighbours(world, {0, 2}) == 2
@@ -68,8 +71,8 @@ use ExUnit.Case
       assert World.calculate_alive_neighbours(world, {2, 3}) == 3
     end
 
-    test 'calculates the alive neighbours of cells in the middle', %{state: state} do
-      world = World.new(state)
+    test 'calculates the alive neighbours of cells in the middle', %{id: id, state: state} do
+      world = World.new(id, state)
 
       assert World.calculate_alive_neighbours(world, {1, 1}) == 3
       assert World.calculate_alive_neighbours(world, {1, 2}) == 4
