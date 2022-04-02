@@ -5,10 +5,10 @@ defmodule Golex.Core.World do
   
   alias Golex.Core.Cell
   
-  defstruct ~w[id generation state]a
+  defstruct ~w[generation state]a
   
-  def new(id, state) do
-    struct!(__MODULE__, id: id, state: state, generation: 0)
+  def new(state) do
+    struct!(__MODULE__, state: state, generation: 0)
   end
 
   def next_generation(world) do
@@ -22,7 +22,7 @@ defmodule Golex.Core.World do
       end)
 
   
-    struct!(__MODULE__, id: world.id, generation: next_generation, state: new_state)
+    struct!(__MODULE__, generation: next_generation, state: new_state)
   end
 
   def calculate_alive_neighbours(world, position) do

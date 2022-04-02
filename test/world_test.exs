@@ -4,7 +4,6 @@ use ExUnit.Case
 
   def setup_function(context) do
     new_context = context
-                  |> Map.put(:id, 1)
                   |> Map.put(:state, state())
                   |> Map.put(:new_state, new_state())
     {:ok, new_context}
@@ -60,8 +59,8 @@ use ExUnit.Case
   describe "World" do
     setup [:setup_function]
 
-    test 'it keeps track of the generation numbert', %{id: id, state: state} do
-      world = World.new(id, state)
+    test 'it keeps track of the generation numbert', %{state: state} do
+      world = World.new(state)
 
       World.next_generation(world)
       |> assert_generation(1)
@@ -71,16 +70,16 @@ use ExUnit.Case
       |> assert_generation(3)
     end
 
-    test 'it creates a new world for each generation', %{id: id, state: state, new_state: new_state} do
-      world = World.new(id, state)
+    test 'it creates a new world for each generation', %{state: state, new_state: new_state} do
+      world = World.new(state)
 
       new_world = World.next_generation(world)
 
       assert new_world.state == new_state
     end
 
-    test 'calculates the alive neighbours of cells in the corners', %{id: id, state: state} do
-      world = World.new(id, state)
+    test 'calculates the alive neighbours of cells in the corners', %{state: state} do
+      world = World.new(state)
 
       assert World.calculate_alive_neighbours(world, {0, 0}) == 2
       assert World.calculate_alive_neighbours(world, {3, 0}) == 0
@@ -88,8 +87,8 @@ use ExUnit.Case
       assert World.calculate_alive_neighbours(world, {3, 3}) == 3
     end
 
-    test 'calculates the alive neighbours of cells at the border', %{id: id, state: state} do
-      world = World.new(id, state)
+    test 'calculates the alive neighbours of cells at the border', %{state: state} do
+      world = World.new(state)
 
       assert World.calculate_alive_neighbours(world, {0, 1}) == 3
       assert World.calculate_alive_neighbours(world, {0, 2}) == 2
@@ -101,8 +100,8 @@ use ExUnit.Case
       assert World.calculate_alive_neighbours(world, {2, 3}) == 3
     end
 
-    test 'calculates the alive neighbours of cells in the middle', %{id: id, state: state} do
-      world = World.new(id, state)
+    test 'calculates the alive neighbours of cells in the middle', %{state: state} do
+      world = World.new(state)
 
       assert World.calculate_alive_neighbours(world, {1, 1}) == 3
       assert World.calculate_alive_neighbours(world, {1, 2}) == 4
