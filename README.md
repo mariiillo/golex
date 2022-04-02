@@ -29,7 +29,7 @@ Execute the following commands in the interactive elixir console
 ```elixir
 iex(1)> Golex.create_world "basic", Golex.Examples.Basic.state
 :ok
-iex(2)> session = Golex.pick_world("basic")
+iex(2)> {name, world} = Golex.pick_world("basic")
 {"basic",
  %Golex.Core.World{
    generation: 0,
@@ -38,7 +38,7 @@ iex(2)> session = Golex.pick_world("basic")
      ...
    }
  }}
-iex(3)> Golex.tick(session)
+iex(3)> Golex.tick(name)
 {:ok,
  %Golex.Core.World{
    generation: 0,
@@ -62,7 +62,7 @@ iex(3)> Golex.tick(session)
      {3, 3} => %Golex.Core.Cell{status: 'dead'}
    }
  }}
-iex(4)> Golex.tick(session)
+iex(4)> Golex.tick(name)
 {:ok,
  %Golex.Core.World{
    generation: 1,

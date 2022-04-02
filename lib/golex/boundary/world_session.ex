@@ -18,14 +18,14 @@ defmodule Golex.Boundary.WorldSession do
   end
 
   def start_link({name, world}) do
-    GenServer.start_link(__MODULE__, {name, world}, name: via({name, world}))
+    GenServer.start_link(__MODULE__, {name, world}, name: via(name))
   end
 
-  def via({_name, _world} = id) do
+  def via(name) do
     {
       :via,
       Registry,
-      {Golex.Registry.WorldSession, id}
+      {Golex.Registry.WorldSession, name}
     }
   end
 
@@ -36,8 +36,8 @@ defmodule Golex.Boundary.WorldSession do
     )
   end
 
-  def tick({name, world}) do
-    GenServer.call(via({name, world}), :tick)
+  def tick(name) do
+    GenServer.call(via(name), :tick)
   end
 
   def handle_call(:tick, _from, {name, world}) do

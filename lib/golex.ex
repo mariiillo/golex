@@ -20,7 +20,7 @@ defmodule Golex do
     end
   end
 
-  def tick({_name, _world} = id) do
-    WorldSession.tick(id)
+  def tick(name) do
+    WorldSession.tick(name)
   end
 end
