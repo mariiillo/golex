@@ -18,6 +18,6 @@ defmodule Golex.Boundary.WorldSession do
       world
       |> World.next_generation()
 
-    {:reply, :ok, new_generation}
+    {:reply, {:ok, world}, new_generation}
   end
 end

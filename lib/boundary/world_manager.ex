@@ -19,6 +19,10 @@ defmodule Golex.Boundary.WorldManager do
     GenServer.call(manager, {:destroy_world, id})
   end
 
+  def lookup_world_by_id(manager \\ __MODULE__, id) do
+   GenServer.call(manager, {:lookup_world_by_id, id})
+  end
+
   def handle_call({:create_world, state}, _from, worlds) do
     next_id = Enum.count(worlds) + 1
     world = World.new(state)
@@ -29,5 +33,9 @@ defmodule Golex.Boundary.WorldManager do
   def handle_call({:destroy_world, id}, _from, worlds) do
     new_worlds = Map.delete(worlds, id)
     {:reply, :ok, new_worlds}
+  end
+
+  def handle_call({:lookup_world_by_id, id}, _from, worlds) do
+    {:reply, worlds[id], worlds}
   end
 end
