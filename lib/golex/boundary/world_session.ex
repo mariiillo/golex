@@ -5,19 +5,46 @@ defmodule Golex.Boundary.WorldSession do
   alias Golex.Core.World
   use GenServer
 
-  def init(world) do
-    {:ok, world}
+  def init({name, world}) do
+    {:ok, {name, world}}
   end
 
-  def tick(session) do
-    GenServer.call(session, :tick)
+  def child_spec({name, world}) do
+    %{
+        id: {__MODULE__, {name, world}},
+        start: {__MODULE__, :start_link, [{name, world}]},
+        restart: :temporary
+      }
   end
 
-  def handle_call(:tick, _from, world) do
+  def start_link({name, world}) do
+    GenServer.start_link(__MODULE__, {name, world}, name: via({name, world}))
+  end
+
+  def via({_name, _world} = id) do
+    {
+      :via,
+      Registry,
+      {Golex.Registry.WorldSession, id}
+    }
+  end
+
+  def start_session({name, world}) do
+    DynamicSupervisor.start_child(
+      Golex.Supervisor.WorldSession,
+      {__MODULE__, {name, world}}
+    )
+  end
+
+  def tick({name, world}) do
+    GenServer.call(via({name, world}), :tick)
+  end
+
+  def handle_call(:tick, _from, {name, world}) do
     new_generation =
       world
       |> World.next_generation()
 
-    {:reply, {:ok, world}, new_generation}
+    {:reply, {:ok, world}, {name, new_generation}}
   end
 end

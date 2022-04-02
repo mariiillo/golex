@@ -23,7 +23,6 @@ defmodule Golex.Examples.Basic do
   end
 
   def world() do
-    state()
-    |> World.new()
+    World.new("basic", state())
   end
 end

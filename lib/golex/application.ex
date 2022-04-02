@@ -8,7 +8,9 @@ defmodule Golex.Application do
   @impl true
   def start(_type, _args) do
     children = [
-      {Golex.Boundary.WorldManager, [name: Golex.Boundary.WorldManager]}
+      {Golex.Boundary.WorldManager, [name: Golex.Boundary.WorldManager]},
+      {Registry, [name: Golex.Registry.WorldSession, keys: :unique]},
+      {DynamicSupervisor, [name: Golex.Supervisor.WorldSession, strategy: :one_for_one]}
     ]
 
     # See https://hexdocs.pm/elixir/Supervisor.html
