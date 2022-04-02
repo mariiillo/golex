@@ -18,7 +18,7 @@ defmodule Golex.Examples.Basic do
       {3, 0} => %Cell{status: 'alive'},
       {3, 1} => %Cell{status: 'dead'},
       {3, 2} => %Cell{status: 'alive'},
-      {3, 3} => %Cell{status: 'dead'},
+      {3, 3} => %Cell{status: 'dead'}
     }
   end
 

@@ -10,7 +10,7 @@ defmodule Golex.Core.Cell do
 
     struct!(__MODULE__, status: new_status)
   end
-  
+
   def alive?(cell) do
     cell.status == 'alive'
   end
