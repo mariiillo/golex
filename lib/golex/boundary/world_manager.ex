@@ -11,6 +11,10 @@ defmodule Golex.Boundary.WorldManager do
 
   def init(_worlds), do: {:error, "state must be a map"}
 
+  def start_link(options \\ []) do
+    GenServer.start_link(__MODULE__, %{}, options)
+  end
+
   def create_world(manager \\ __MODULE__, state) do
     GenServer.call(manager, {:create_world, state})
   end
@@ -20,7 +24,7 @@ defmodule Golex.Boundary.WorldManager do
   end
 
   def lookup_world_by_id(manager \\ __MODULE__, id) do
-   GenServer.call(manager, {:lookup_world_by_id, id})
+    GenServer.call(manager, {:lookup_world_by_id, id})
   end
 
   def handle_call({:create_world, state}, _from, worlds) do
