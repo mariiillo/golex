@@ -12,17 +12,11 @@ defmodule Golex.Core.World do
   end
 
   def next_generation(world) do
-    next_generation = world.generation + 1
-
-    new_state =
-      world.state
-      |> Enum.reduce(%{}, fn {position, cell}, acc ->
-        number_of_living_neighbours = calculate_alive_neighbours(world, position)
-        new_cell = Cell.next_generation(cell, number_of_living_neighbours)
-        Map.put(acc, position, new_cell)
-      end)
-
-    struct!(__MODULE__, generation: next_generation, state: new_state)
+    struct!(
+      __MODULE__,
+      generation: world.generation + 1,
+      state: calculate_new_state(world)
+    )
   end
 
   def calculate_alive_neighbours(world, position) do
@@ -59,5 +53,13 @@ defmodule Golex.Core.World do
   defp count_alive_cells(cells) do
     cells
     |> Enum.count()
+  end
+
+  defp calculate_new_state(world) do
+    Enum.reduce(world.state, %{}, fn {position, cell}, acc ->
+      number_of_living_neighbours = calculate_alive_neighbours(world, position)
+      new_cell = Cell.next_generation(cell, number_of_living_neighbours)
+      Map.put(acc, position, new_cell)
+    end)
   end
 end

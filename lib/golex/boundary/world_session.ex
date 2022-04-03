@@ -11,10 +11,10 @@ defmodule Golex.Boundary.WorldSession do
 
   def child_spec({name, world}) do
     %{
-        id: {__MODULE__, {name, world}},
-        start: {__MODULE__, :start_link, [{name, world}]},
-        restart: :temporary
-      }
+      id: {__MODULE__, {name, world}},
+      start: {__MODULE__, :start_link, [{name, world}]},
+      restart: :temporary
+    }
   end
 
   def start_link({name, world}) do
