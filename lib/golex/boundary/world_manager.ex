@@ -28,7 +28,7 @@ defmodule Golex.Boundary.WorldManager do
   end
 
   def handle_call({:create_world, {name, state}}, _from, worlds) do
-    world = World.new(name, state)
+    world = World.new(state)
     new_worlds = Map.put(worlds, name, world)
     {:reply, :ok, new_worlds}
   end

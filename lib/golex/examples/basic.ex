@@ -1,5 +1,5 @@
 defmodule Golex.Examples.Basic do
-  alias Golex.Core.{World, Cell}
+  alias Golex.Core.Cell
 
   def state do
     %{
@@ -20,9 +20,5 @@ defmodule Golex.Examples.Basic do
       {3, 2} => %Cell{status: 'alive'},
       {3, 3} => %Cell{status: 'dead'}
     }
-  end
-
-  def world() do
-    World.new("basic", state())
   end
 end
