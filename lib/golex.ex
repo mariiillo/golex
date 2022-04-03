@@ -14,7 +14,7 @@ defmodule Golex do
     with %World{} = world <- WorldManager.lookup_world_by_id(name),
          {:ok, _} <- WorldSession.start_session({name, world})
     do
-      {name, world}
+      {:ok, name}
     else
       error -> error
     end

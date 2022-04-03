@@ -29,15 +29,8 @@ Execute the following commands in the interactive elixir console
 ```elixir
 iex(1)> Golex.create_world "basic", Golex.Examples.Basic.state
 :ok
-iex(2)> {name, world} = Golex.pick_world("basic")
-{"basic",
- %Golex.Core.World{
-   generation: 0,
-   name: "basic",
-   state: %{
-     ...
-   }
- }}
+iex(2)> {:ok, name} = Golex.pick_world("basic")
+{:ok, "basic"}
 iex(3)> Golex.tick(name)
 {:ok,
  %Golex.Core.World{
